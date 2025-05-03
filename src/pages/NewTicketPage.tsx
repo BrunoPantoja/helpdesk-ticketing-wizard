@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 
 const NewTicketPage: React.FC = () => {
-  const { addTicket, getSolicitantes } = useApp();
+  const { addTicket, getSolicitantes, currentUser } = useApp();
   const navigate = useNavigate();
   
   const solicitantes = getSolicitantes();
@@ -32,6 +33,13 @@ const NewTicketPage: React.FC = () => {
     prioridade: "media"
   });
   
+  // Preencher automaticamente o solicitante quando a página carregar
+  useEffect(() => {
+    if (currentUser && currentUser.tipo === "solicitante") {
+      setFormData(prev => ({ ...prev, solicitanteId: currentUser.id }));
+    }
+  }, [currentUser]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));

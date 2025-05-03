@@ -7,6 +7,8 @@ import { toast } from "@/components/ui/use-toast";
 interface AppContextType {
   users: User[];
   tickets: Ticket[];
+  currentUser: User | null;
+  setCurrentUser: (userId: string) => void;
   addUser: (user: Omit<User, "id">) => void;
   addTicket: (ticket: Omit<Ticket, "id" | "dataCriacao" | "dataAtualizacao" | "comentarios">) => Ticket;
   updateTicketStatus: (ticketId: string, status: TicketStatus) => void;
@@ -23,6 +25,22 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [tickets, setTickets] = useState<Ticket[]>(mockTickets);
+  // Definindo um usuário atual simulado (primeiro solicitante encontrado)
+  const [currentUser, setCurrentUserState] = useState<User | null>(() => {
+    const solicitante = mockUsers.find(user => user.tipo === "solicitante");
+    return solicitante || null;
+  });
+
+  const setCurrentUser = (userId: string) => {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      setCurrentUserState(user);
+      toast({
+        title: "Usuário alterado",
+        description: `Agora você está usando a conta de ${user.nome}.`
+      });
+    }
+  };
 
   const addUser = (user: Omit<User, "id">) => {
     const prefix = user.tipo === "solicitante" ? "s" : "t";
@@ -119,6 +137,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       value={{ 
         users, 
         tickets, 
+        currentUser,
+        setCurrentUser,
         addUser, 
         addTicket, 
         updateTicketStatus,
