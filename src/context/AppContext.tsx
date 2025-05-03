@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { User, Ticket, TicketStatus, TicketPrioridade } from "../types";
 import { mockUsers, mockTickets, generateId } from "../data/mockData";
@@ -141,10 +140,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       // Solicitantes só podem ver seus próprios tickets
       return tickets.filter(ticket => ticket.solicitanteId === currentUser.id);
     } else if (currentUser.tipo === "tecnico") {
-      // Técnicos podem ver tickets atribuídos a eles e tickets não atribuídos
+      // Técnicos podem ver tickets atribuídos a eles ou tickets abertos sem técnico atribuído
       return tickets.filter(ticket => 
         ticket.tecnicoId === currentUser.id || 
-        !ticket.tecnicoId
+        (ticket.status === "aberto" && !ticket.tecnicoId)
       );
     }
     

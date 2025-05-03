@@ -71,7 +71,7 @@ const TicketsPage: React.FC = () => {
           <p className="text-gray-500">
             {currentUser?.tipo === "solicitante" 
               ? "Visualize e gerencie seus tickets" 
-              : "Gerencie os tickets atribuídos a você"}
+              : "Gerencie os tickets atribuídos a você e tickets abertos"}
           </p>
         </div>
         <Button 
@@ -149,7 +149,7 @@ const TicketsPage: React.FC = () => {
           <p className="mt-2 text-gray-500">
             {currentUser?.tipo === "solicitante" 
               ? "Você ainda não tem tickets. Crie um novo ticket para começar." 
-              : "Não há tickets atribuídos a você ou que correspondam aos filtros selecionados."}
+              : "Não há tickets atribuídos a você ou em aberto que correspondam aos filtros selecionados."}
           </p>
           <Button 
             className="mt-4 bg-support-blue hover:bg-support-darkblue"
