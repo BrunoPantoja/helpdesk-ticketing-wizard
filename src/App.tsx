@@ -11,6 +11,7 @@ import TicketsPage from "./pages/TicketsPage";
 import NewTicketPage from "./pages/NewTicketPage";
 import TicketDetailPage from "./pages/TicketDetailPage";
 import CadastroPage from "./pages/CadastroPage";
+import SobrePage from "./pages/SobrePage";
 import { AppProvider } from "./context/AppContext";
 import "@/App.css";
 
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="tickets/new" element={<NewTicketPage />} />
               <Route path="tickets/:id" element={<TicketDetailPage />} />
               <Route path="cadastro" element={<CadastroPage />} />
+              <Route path="sobre" element={<SobrePage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

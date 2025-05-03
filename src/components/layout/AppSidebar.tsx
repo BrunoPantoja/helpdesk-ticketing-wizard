@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarHeader
 } from "@/components/ui/sidebar";
-import { TicketIcon, HomeIcon, UsersIcon, UserPlusIcon, FileTextIcon } from "lucide-react";
+import { TicketIcon, HomeIcon, UserPlusIcon, FileTextIcon, InfoIcon } from "lucide-react";
 
 const AppSidebar: React.FC = () => {
   const items = [
@@ -30,6 +30,11 @@ const AppSidebar: React.FC = () => {
       title: "Cadastro", 
       url: "/cadastro", 
       icon: UserPlusIcon 
+    },
+    {
+      title: "Sobre",
+      url: "/sobre",
+      icon: InfoIcon
     }
   ];
 
