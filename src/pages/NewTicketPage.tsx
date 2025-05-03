@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -63,7 +62,16 @@ const NewTicketPage: React.FC = () => {
       status: "aberto"
     });
     
-    navigate(`/tickets/${newTicket.id}`);
+    if (newTicket && newTicket.id) {
+      navigate(`/tickets/${newTicket.id}`);
+    } else {
+      // Fallback if no ticket was returned
+      navigate('/tickets');
+      toast({
+        title: "Ticket criado",
+        description: "O ticket foi criado com sucesso, mas houve um erro ao redirecioná-lo."
+      });
+    }
   };
   
   return (

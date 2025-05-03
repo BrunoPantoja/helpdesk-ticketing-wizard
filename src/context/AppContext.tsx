@@ -8,7 +8,7 @@ interface AppContextType {
   users: User[];
   tickets: Ticket[];
   addUser: (user: Omit<User, "id">) => void;
-  addTicket: (ticket: Omit<Ticket, "id" | "dataCriacao" | "dataAtualizacao" | "comentarios">) => void;
+  addTicket: (ticket: Omit<Ticket, "id" | "dataCriacao" | "dataAtualizacao" | "comentarios">) => Ticket;
   updateTicketStatus: (ticketId: string, status: TicketStatus) => void;
   addComentario: (ticketId: string, usuarioId: string, texto: string) => void;
   atribuirTecnico: (ticketId: string, tecnicoId: string) => void;
@@ -34,7 +34,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     });
   };
 
-  const addTicket = (ticket: Omit<Ticket, "id" | "dataCriacao" | "dataAtualizacao" | "comentarios">) => {
+  const addTicket = (ticket: Omit<Ticket, "id" | "dataCriacao" | "dataAtualizacao" | "comentarios">): Ticket => {
     const now = new Date().toISOString();
     const newTicket: Ticket = {
       ...ticket,
