@@ -19,7 +19,7 @@ import { Ticket, TicketStatus } from "@/types";
 import { categorias } from "@/data/mockData";
 
 const TicketsPage: React.FC = () => {
-  const { tickets } = useApp();
+  const { getUserTickets, currentUser } = useApp();
   const navigate = useNavigate();
 
   const [filtros, setFiltros] = useState({
@@ -40,7 +40,10 @@ const TicketsPage: React.FC = () => {
     setFiltros({...filtros, busca: e.target.value});
   };
 
-  const ticketsFiltrados = tickets.filter((ticket: Ticket) => {
+  // Obtem apenas os tickets do usuário atual
+  const userTickets = getUserTickets();
+  
+  const ticketsFiltrados = userTickets.filter((ticket: Ticket) => {
     // Filtrar por status
     if (filtros.status !== "todos" && ticket.status !== filtros.status) {
       return false;
@@ -65,7 +68,11 @@ const TicketsPage: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold">Tickets</h1>
-          <p className="text-gray-500">Gerencie suas solicitações de suporte</p>
+          <p className="text-gray-500">
+            {currentUser?.tipo === "solicitante" 
+              ? "Visualize e gerencie seus tickets" 
+              : "Gerencie os tickets atribuídos a você"}
+          </p>
         </div>
         <Button 
           className="bg-support-blue hover:bg-support-darkblue"
@@ -140,7 +147,9 @@ const TicketsPage: React.FC = () => {
           <TicketIcon className="h-12 w-12 text-gray-300 mx-auto" />
           <h3 className="mt-4 text-lg font-medium text-gray-900">Nenhum ticket encontrado</h3>
           <p className="mt-2 text-gray-500">
-            Não há tickets que correspondam aos filtros selecionados.
+            {currentUser?.tipo === "solicitante" 
+              ? "Você ainda não tem tickets. Crie um novo ticket para começar." 
+              : "Não há tickets atribuídos a você ou que correspondam aos filtros selecionados."}
           </p>
           <Button 
             className="mt-4 bg-support-blue hover:bg-support-darkblue"

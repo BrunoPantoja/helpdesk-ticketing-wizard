@@ -18,6 +18,7 @@ interface AppContextType {
   getTecnicos: () => User[];
   getTicketById: (id: string) => Ticket | undefined;
   getUserById: (id: string) => User | undefined;
+  getUserTickets: () => Ticket[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -131,6 +132,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const getTicketById = (id: string) => tickets.find(ticket => ticket.id === id);
   const getUserById = (id: string) => users.find(user => user.id === id);
+  
+  // Nova função para obter apenas os tickets do usuário atual
+  const getUserTickets = () => {
+    if (!currentUser) return [];
+    
+    if (currentUser.tipo === "solicitante") {
+      // Solicitantes só podem ver seus próprios tickets
+      return tickets.filter(ticket => ticket.solicitanteId === currentUser.id);
+    } else if (currentUser.tipo === "tecnico") {
+      // Técnicos podem ver tickets atribuídos a eles e tickets não atribuídos
+      return tickets.filter(ticket => 
+        ticket.tecnicoId === currentUser.id || 
+        !ticket.tecnicoId
+      );
+    }
+    
+    return [];
+  };
 
   return (
     <AppContext.Provider 
@@ -147,7 +166,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         getSolicitantes,
         getTecnicos,
         getTicketById,
-        getUserById
+        getUserById,
+        getUserTickets
       }}
     >
       {children}
